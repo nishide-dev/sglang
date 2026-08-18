@@ -569,6 +569,7 @@ def cli_main():
                 raise e
 
     server_args = ServerArgs.from_cli_args(args)
+    server_args.resolve_once()
     bench_args = BenchArgs.from_cli_args(args)
 
     logging.basicConfig(
