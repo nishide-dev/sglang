@@ -25,6 +25,7 @@ from sglang.multimodal_gen.runtime.models.encoders.base import (
 from sglang.multimodal_gen.runtime.models.encoders.minimax_h3_qwen3vl import (
     MiniMaxH3Qwen3VLEncoder,
 )
+from sglang.multimodal_gen.runtime.models.encoders.qwen3 import Qwen3ForCausalLM
 
 
 class TestTextEncoderClassResolution(unittest.TestCase):
@@ -187,6 +188,17 @@ class TestTextEncoderQuantization(unittest.TestCase):
         _configure_encoder_quantization(
             model_config,
             MiniMaxH3Qwen3VLEncoder,
+            {},
+            "/model/text_encoder",
+            "text_encoder",
+        )
+        self.assertIs(model_config.quant_config, self.serialized)
+
+    def test_serialized_fp8_checkpoint_configures_qwen3_encoder(self):
+        model_config = SimpleNamespace(quant_config=None)
+        _configure_encoder_quantization(
+            model_config,
+            Qwen3ForCausalLM,
             {},
             "/model/text_encoder",
             "text_encoder",

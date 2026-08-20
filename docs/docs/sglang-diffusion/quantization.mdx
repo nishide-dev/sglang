@@ -423,6 +423,22 @@ the native encoder explicitly supports. Text-encoder FP8 is approximate, is
 not enabled by default, and is rejected by MiniMax-H3's strict
 `quality="high"` deployment contract.
 
+## Qwen3 Text Encoder FP8
+
+Native Qwen3 text encoders can load compatible serialized FP8 repositories.
+For example, `Qwen/Qwen3-4B-FP8` is an architecture-compatible replacement for
+Z-Image-Turbo's Qwen3-4B component:
+
+```bash Command
+sglang serve \
+  --model-path Tongyi-MAI/Z-Image-Turbo \
+  --component-paths.text_encoder Qwen/Qwen3-4B-FP8
+```
+
+SGLang reads the repository's `quantization_config`; no `--quantization` flag
+is needed. The replacement checkpoint must retain the base component's
+architecture and embedding contract.
+
 ## Transformers Component BnB4
 
 Model components that already have a native Transformers loading path can load

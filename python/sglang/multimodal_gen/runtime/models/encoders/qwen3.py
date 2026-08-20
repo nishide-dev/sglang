@@ -23,7 +23,10 @@ from sglang.multimodal_gen.runtime.loader.weight_utils import (
     default_weight_loader,
     maybe_remap_kv_scale_name,
 )
-from sglang.multimodal_gen.runtime.models.encoders.base import TextEncoder
+from sglang.multimodal_gen.runtime.models.encoders.base import (
+    CheckpointQuantizationCapability,
+    TextEncoder,
+)
 from sglang.srt.layers.activation import SiluAndMul
 from sglang.srt.layers.layernorm import RMSNorm
 
@@ -322,6 +325,11 @@ class Qwen3ForCausalLM(TextEncoder):
     - QK-Norm for better training stability
     - FSDP sharding for CPU offload
     """
+
+    checkpoint_quantization_capability = CheckpointQuantizationCapability(
+        backend="diffusion",
+        methods=frozenset({"fp8"}),
+    )
 
     def __init__(self, config: Qwen3TextConfig) -> None:
         super().__init__(config)
